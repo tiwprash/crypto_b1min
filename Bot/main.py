@@ -170,7 +170,7 @@ def bot(interval):
                 tpsl(id=id,sl=sl)
                 payload = {
                         'chat_id': CHAT_ID,
-                        'text': f"Signal for {best_signal} \n Current Portfolio value is {balance_c}"
+                        'text': f"Signal for {best_signal} \n Current Portfolio value is {balance_c} \n buy Price is {price} for 1 min "
                     }
                 
                 # Send the request
@@ -190,7 +190,7 @@ def bot(interval):
                 tpsl(id=id,sl=sl)
                 payload = {
                         'chat_id': CHAT_ID,
-                        'text': f"Signal for {best_signal} \n Current Portfolio value is {balance_c}"
+                        'text': f"Signal for {best_signal} \n Current Portfolio value is {balance_c} \n buy Price is {price} for 1 min "
                     }
                 # Send the request
                 response = requests.post(url, data=payload)
@@ -201,7 +201,7 @@ def bot(interval):
                 else:
                     print('Failed to send message:', response.text)
 
-            csv_file = [{"DateTime":date_time,"Token": token, "signal": trade_signal, "previous_closing": close_price,"buy/sell":price, "percentage": percentage, "SL": sl, "TP": tp,"interval":"15 min","Balance":balance_c,"RSI":rsi,"MFI":mfi}]
+            csv_file = [{"DateTime":date_time,"Token": token, "signal": trade_signal, "previous_closing": close_price,"buy/sell":price, "percentage": percentage, "SL": sl, "TP": tp,"interval":"1 min","Balance":balance_c,"RSI":rsi,"MFI":mfi}]
             with open('Trade_details_.csv', mode='a', newline='') as file:
                 fieldnames = ["DateTime","Token", "signal", "previous_closing","buy/sell", "percentage", "SL", "TP","interval","Balance","RSI","MFI"]
                 writer = csv.DictWriter(file, fieldnames=fieldnames)
