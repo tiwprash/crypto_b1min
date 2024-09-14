@@ -1,3 +1,25 @@
+import os
+import sys
+import fcntl
+
+# Create a lock file in /tmp directory
+lock_file_path = '/tmp/main_py.lock'
+lock_file = open(lock_file_path, 'w')
+
+try:
+    # Try to acquire the lock, if already locked, it will raise an IOError
+    fcntl.flock(lock_file, fcntl.LOCK_EX | fcntl.LOCK_NB)
+except IOError:
+    print("Another instance is running. Exiting.")
+    sys.exit(0)
+
+# Continue with your main script logic here
+
+# Make sure to release the lock at the end of your script
+fcntl.flock(lock_file, fcntl.LOCK_UN)
+lock_file.close()
+
+
 import requests ,time , operator,csv
 import numpy as np
 from create_order import place_order
