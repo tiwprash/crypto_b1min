@@ -52,7 +52,7 @@ symbol = response.json()
 def bb_statergy(symbol, interval,signals):
     now = time.time()
     current_time = int(now)
-    seconds_in_day = 60 * 20
+    seconds_in_day = 60 * 90
     start_date = now - seconds_in_day
 
 
@@ -248,14 +248,14 @@ def run_every_5_minutes():
         seconds = current_time.tm_sec
         
         # Calculate sleep time to the next 30-minute mark
-        sleep_time = (1 - minutes % 1) * 60 - seconds
+        sleep_time = (5 - minutes % 5) * 60 - seconds
 
         sleep_time += 1
 
         print(f"Sleeping for {sleep_time} seconds.")
         
         time.sleep(sleep_time)
-        bot(1)
+        bot(5)
 
 if __name__ == "__main__":
     run_every_5_minutes()
