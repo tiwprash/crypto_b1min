@@ -52,7 +52,7 @@ symbol = response.json()
 def bb_statergy(symbol, interval,signals):
     now = time.time()
     current_time = int(now)
-    seconds_in_day = 60 * 90
+    seconds_in_day = 60 * 60 * 4
     start_date = now - seconds_in_day
 
 
