@@ -96,12 +96,12 @@ def bb_statergy(symbol, interval,signals):
         # Long Position
         sl_for_long = round((df['close'].iloc[-2] - ((df['close'].iloc[-2] - df['low'].iloc[-2]) + (2 * df['atr'].iloc[-2]))), 7)
         risk_amount_long = df['close'].iloc[-2] - sl_for_long
-        tp_for_long = round((df['close'].iloc[-2] + (1.1 * risk_amount_long)), 7)
+        tp_for_long = round((df['close'].iloc[-2] + (1 * risk_amount_long)), 7)
 
         # Short Position
         sl_for_short = round((((df['high'].iloc[-2] - df['close'].iloc[-2]) + (2 * df['atr'].iloc[-2])) + df['close'].iloc[-2]), 7)
         risk_amount_short = sl_for_short - df['close'].iloc[-2]
-        tp_for_short = round((df['close'].iloc[-2] - (1.1 * risk_amount_short)), 7)
+        tp_for_short = round((df['close'].iloc[-2] - (1 * risk_amount_short)), 7)
 
     except Exception as e:
         logging.error(f"Error processing data for {symbol}: {e}")
