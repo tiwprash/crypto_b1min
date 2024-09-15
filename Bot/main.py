@@ -192,7 +192,7 @@ def bot(interval):
                 tpsl(id=id,sl=sl)
                 payload = {
                         'chat_id': CHAT_ID,
-                        'text': f"Signal for {best_signal} \n Current Portfolio value is {balance_c} \n buy Price is {price} for 1 min "
+                        'text': f"Signal for {best_signal} \n Current Portfolio value is {balance_c} \n buy Price is {price} for 15 min "
                     }
                 
                 # Send the request
@@ -212,7 +212,7 @@ def bot(interval):
                 tpsl(id=id,sl=sl)
                 payload = {
                         'chat_id': CHAT_ID,
-                        'text': f"Signal for {best_signal} \n Current Portfolio value is {balance_c} \n buy Price is {price} for 1 min "
+                        'text': f"Signal for {best_signal} \n Current Portfolio value is {balance_c} \n buy Price is {price} for 15 min "
                     }
                 # Send the request
                 response = requests.post(url, data=payload)
@@ -223,7 +223,7 @@ def bot(interval):
                 else:
                     print('Failed to send message:', response.text)
 
-            csv_file = [{"DateTime":date_time,"Token": token, "signal": trade_signal, "previous_closing": close_price,"buy/sell":price, "percentage": percentage, "SL": sl, "TP": tp,"interval":"1 min","Balance":balance_c,"RSI":rsi,"MFI":mfi}]
+            csv_file = [{"DateTime":date_time,"Token": token, "signal": trade_signal, "previous_closing": close_price,"buy/sell":price, "percentage": percentage, "SL": sl, "TP": tp,"interval":"15 min","Balance":balance_c,"RSI":rsi,"MFI":mfi}]
             with open('Trade_details_.csv', mode='a', newline='') as file:
                 fieldnames = ["DateTime","Token", "signal", "previous_closing","buy/sell", "percentage", "SL", "TP","interval","Balance","RSI","MFI"]
                 writer = csv.DictWriter(file, fieldnames=fieldnames)
@@ -248,14 +248,14 @@ def run_every_5_minutes():
         seconds = current_time.tm_sec
         
         # Calculate sleep time to the next 30-minute mark
-        sleep_time = (5 - minutes % 5) * 60 - seconds
+        sleep_time = (15 - minutes % 15) * 60 - seconds
 
         sleep_time += 1
 
         print(f"Sleeping for {sleep_time} seconds.")
         
         time.sleep(sleep_time)
-        bot(5)
+        bot(15)
 
 if __name__ == "__main__":
     run_every_5_minutes()
