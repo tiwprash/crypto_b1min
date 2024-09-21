@@ -1,26 +1,4 @@
-import os
-import sys
-import fcntl
-
-# Create a lock file in /tmp directory
-lock_file_path = '/tmp/main_py.lock'
-lock_file = open(lock_file_path, 'w')
-
-try:
-    # Try to acquire the lock, if already locked, it will raise an IOError
-    fcntl.flock(lock_file, fcntl.LOCK_EX | fcntl.LOCK_NB)
-except IOError:
-    print("Another instance is running. Exiting.")
-    sys.exit(0)
-
-# Continue with your main script logic here
-
-# Make sure to release the lock at the end of your script
-fcntl.flock(lock_file, fcntl.LOCK_UN)
-lock_file.close()
-
-
-import requests ,time , operator,csv
+import requests ,time , operator,csv,os,sys
 import numpy as np
 from create_order import place_order
 from get_position_details import position_details
@@ -109,13 +87,13 @@ def bb_statergy(symbol, interval,signals):
         return signals
 
     try:
-        if df['close'].iloc[-2] >= df['bb_upper'].iloc[-2] and bb_difference_perc >= 1.5  and df['mfi'].iloc[-2] >= 75 and df['rsi'].iloc[-2] >= 92 and volume24 >= 1000000 :   
-            signals.append({"close_price":df['close'].iloc[-2],"Symbol": symbol, "Signal": "sell", "Percentage": bb_difference_perc, "MFI": df['mfi'].iloc[-2], "TP": tp_for_short, "SL": sl_for_short,"RSI":df['rsi'].iloc[-2]})
+        if df['close'].iloc[-2] >= df['bb_upper'].iloc[-2] and bb_difference_perc >= 2.5 and df['volume'].iloc[-2] < df['volume'].iloc[-3] and df['mfi'].iloc[-2] >= 75 and df['rsi'].iloc[-2] >= 80 and volume24 >= 1000000 :   
+            signals.append({"close_price":df['close'].iloc[-2],"Symbol": symbol, "Signal": "buy", "Percentage": bb_difference_perc, "MFI": df['mfi'].iloc[-2], "TP": tp_for_short, "SL": sl_for_short,"RSI":df['rsi'].iloc[-2]})
             logging.info(f"{symbol} sell signal generated")
             print(f"{symbol} sell || {signals[-1]} || {df['rsi'].iloc[-2]} || {df['rsi'].iloc[-2]}")
 
-        elif df['close'].iloc[-2] <= df['bb_lower'].iloc[-2] and bb_difference_perc >= 1.5 and df['mfi'].iloc[-2] <= 25 and df['rsi'].iloc[-2] <= 8 and volume24 >= 1000000 :
-            signals.append({"close_price":df['close'].iloc[-2],"Symbol": symbol, "Signal": "buy", "Percentage": bb_difference_perc, "MFI": df['mfi'].iloc[-2], "TP": tp_for_long, "SL": sl_for_long,"RSI":df['rsi'].iloc[-2]})
+        elif df['close'].iloc[-2] <= df['bb_lower'].iloc[-2] and bb_difference_perc >= 2.5 and df['volume'].iloc[-2] < df['volume'].iloc[-3] and df['mfi'].iloc[-2] <= 25 and df['rsi'].iloc[-2] <= 20 and volume24 >= 1000000:
+            signals.append({"close_price":df['close'].iloc[-2],"Symbol": symbol, "Signal": "sell", "Percentage": bb_difference_perc, "MFI": df['mfi'].iloc[-2], "TP": tp_for_long, "SL": sl_for_long,"RSI":df['rsi'].iloc[-2]})
             logging.info(f"{symbol} buy signal generated")
             print(f"{symbol} buy || {signals[-1]} || {df['rsi'].iloc[-2]} || {df['rsi'].iloc[-2]}")
     except Exception as e:
@@ -141,7 +119,8 @@ def bot(interval):
         url = f'https://api.telegram.org/bot{BOT_TOKEN}/sendMessage'
 
         balance_c = float(balance())
-        funds = round(balance_c,2)*0.7
+        # funds = round(balance_c,2)*0.7
+        funds = 1
 
         signalss = []
 
@@ -185,8 +164,8 @@ def bot(interval):
             decimal = count_digits_after_decimal(close_price)
 
             if trade_signal == "buy" :
-                tp = round(take_profit,decimal) 
-                sl = round(stop_loss,decimal)
+                tp = round(price * 1.010,decimal) 
+                sl = round(price * 0.995,decimal)
                 place_tp_order(side="sell",pair=token,activ_pos=active_pos,tp=tp)
                 print(sl,tp,id)
                 tpsl(id=id,sl=sl)
@@ -205,8 +184,8 @@ def bot(interval):
                     print('Failed to send message:', response.text)
             
             elif trade_signal == "sell" :
-                sl = round(stop_loss,decimal) 
-                tp = round(take_profit,decimal)
+                sl = round(price * 1.005,decimal) 
+                tp = round(price * 0.990,decimal)
                 place_tp_order(side="buy",pair=token,activ_pos=-(active_pos),tp=tp)
                 print(sl,tp)
                 tpsl(id=id,sl=sl)
