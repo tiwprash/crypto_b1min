@@ -87,12 +87,12 @@ def bb_statergy(symbol, interval,signals):
         return signals
 
     try:
-        if df['close'].iloc[-2] >= df['bb_upper'].iloc[-2] and bb_difference_perc >= 1.5 and df['volume'].iloc[-2] < df['volume'].iloc[-3] and df['mfi'].iloc[-2] >= 60 and df['rsi'].iloc[-2] >= 70 and volume24 >= 1000000 :   
+        if df['close'].iloc[-2] >= df['bb_upper'].iloc[-2] and bb_difference_perc >= 1.5 and df['volume'].iloc[-2] < df['volume'].iloc[-3] and df['mfi'].iloc[-2] >= 60 and df['rsi'].iloc[-2] >= 70 and volume24 >= 100000 :   
             signals.append({"close_price":df['close'].iloc[-2],"Symbol": symbol, "Signal": "buy", "Percentage": bb_difference_perc, "MFI": df['mfi'].iloc[-2], "TP": tp_for_short, "SL": sl_for_short,"RSI":df['rsi'].iloc[-2]})
             logging.info(f"{symbol} sell signal generated")
             print(f"{symbol} sell || {signals[-1]} || {df['rsi'].iloc[-2]} || {df['rsi'].iloc[-2]}")
 
-        elif df['close'].iloc[-2] <= df['bb_lower'].iloc[-2] and bb_difference_perc >= 1.5 and df['volume'].iloc[-2] < df['volume'].iloc[-3] and df['mfi'].iloc[-2] <= 30 and df['rsi'].iloc[-2] <= 30 and volume24 >= 1000000:
+        elif df['close'].iloc[-2] <= df['bb_lower'].iloc[-2] and bb_difference_perc >= 1.5 and df['volume'].iloc[-2] < df['volume'].iloc[-3] and df['mfi'].iloc[-2] <= 30 and df['rsi'].iloc[-2] <= 30 and volume24 >= 100000:
             signals.append({"close_price":df['close'].iloc[-2],"Symbol": symbol, "Signal": "sell", "Percentage": bb_difference_perc, "MFI": df['mfi'].iloc[-2], "TP": tp_for_long, "SL": sl_for_long,"RSI":df['rsi'].iloc[-2]})
             logging.info(f"{symbol} buy signal generated")
             print(f"{symbol} buy || {signals[-1]} || {df['rsi'].iloc[-2]} || {df['rsi'].iloc[-2]}")
@@ -164,7 +164,7 @@ def bot(interval):
             decimal = count_digits_after_decimal(close_price)
 
             if trade_signal == "buy" :
-                tp = round(price * 1.010,decimal) 
+                tp = round(price * 1.008,decimal) 
                 sl = round(price * 0.995,decimal)
                 place_tp_order(side="sell",pair=token,activ_pos=active_pos,tp=tp)
                 print(sl,tp,id)
@@ -185,7 +185,7 @@ def bot(interval):
             
             elif trade_signal == "sell" :
                 sl = round(price * 1.005,decimal) 
-                tp = round(price * 0.990,decimal)
+                tp = round(price * 0.992,decimal)
                 place_tp_order(side="buy",pair=token,activ_pos=-(active_pos),tp=tp)
                 print(sl,tp)
                 tpsl(id=id,sl=sl)
@@ -227,14 +227,14 @@ def run_every_5_minutes():
         seconds = current_time.tm_sec
         
         # Calculate sleep time to the next 30-minute mark
-        sleep_time = (15 - minutes % 15) * 60 - seconds
+        sleep_time = (1 - minutes % 1) * 60 - seconds
 
         sleep_time += 1
 
         print(f"Sleeping for {sleep_time} seconds.")
         
         time.sleep(sleep_time)
-        bot(15)
+        bot(1)
 
 if __name__ == "__main__":
     run_every_5_minutes()
