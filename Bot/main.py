@@ -164,11 +164,11 @@ def bot(interval):
             decimal = count_digits_after_decimal(close_price)
 
             if trade_signal == "buy" :
-                tp = round(price * 1.006,decimal) 
-                sl = round(price * 0.997,decimal)
+                tp = round(price * 1.008,decimal) 
+                sl = round(price * 0.995,decimal)
                 place_tp_order(side="sell",pair=token,activ_pos=active_pos,tp=tp)
                 print(sl,tp,id)
-                # tpsl(id=id,sl=sl)
+                tpsl(id=id,sl=sl)
                 payload = {
                         'chat_id': CHAT_ID,
                         'text': f"Signal for {best_signal} \n Current Portfolio value is {balance_c} \n buy Price is {price} for 15 min "
@@ -184,11 +184,11 @@ def bot(interval):
                     print('Failed to send message:', response.text)
             
             elif trade_signal == "sell" :
-                sl = round(price * 1.003,decimal) 
-                tp = round(price * 0.994,decimal)
+                sl = round(price * 1.005,decimal) 
+                tp = round(price * 0.992,decimal)
                 place_tp_order(side="buy",pair=token,activ_pos=-(active_pos),tp=tp)
                 print(sl,tp)
-                # tpsl(id=id,sl=sl)
+                tpsl(id=id,sl=sl)
                 payload = {
                         'chat_id': CHAT_ID,
                         'text': f"Signal for {best_signal} \n Current Portfolio value is {balance_c} \n buy Price is {price} for 15 min "
