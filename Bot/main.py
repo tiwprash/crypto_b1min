@@ -87,13 +87,13 @@ def bb_statergy(symbol, interval,signals):
         return signals
 
     try:
-        if df['close'].iloc[-2] >= df['bb_upper'].iloc[-2] and bb_difference_perc >= 2 and df['volume'].iloc[-2] < df['volume'].iloc[-3] and df['mfi'].iloc[-2] >= 70 and df['rsi'].iloc[-2] >= 70 and volume24 >= 100000 :   
-            signals.append({"close_price":df['close'].iloc[-2],"Symbol": symbol, "Signal": "sell", "Percentage": bb_difference_perc, "MFI": df['mfi'].iloc[-2], "TP": tp_for_short, "SL": sl_for_short,"RSI":df['rsi'].iloc[-2]})
+        if df['close'].iloc[-2] >= df['bb_upper'].iloc[-2] and bb_difference_perc >= 2 and df['mfi'].iloc[-2] >= 45 and df['rsi'].iloc[-2] >= 45 and volume24 >= 100000 :   
+            signals.append({"close_price":df['close'].iloc[-2],"Symbol": symbol, "Signal": "buy", "Percentage": bb_difference_perc, "MFI": df['mfi'].iloc[-2], "TP": tp_for_short, "SL": sl_for_short,"RSI":df['rsi'].iloc[-2]})
             logging.info(f"{symbol} sell signal generated")
             print(f"{symbol} sell || {signals[-1]} || {df['rsi'].iloc[-2]} || {df['rsi'].iloc[-2]}")
 
-        elif df['close'].iloc[-2] <= df['bb_lower'].iloc[-2] and bb_difference_perc >= 2 and df['volume'].iloc[-2] < df['volume'].iloc[-3] and df['mfi'].iloc[-2] <= 30 and df['rsi'].iloc[-2] <= 30 and volume24 >= 100000:
-            signals.append({"close_price":df['close'].iloc[-2],"Symbol": symbol, "Signal": "buy", "Percentage": bb_difference_perc, "MFI": df['mfi'].iloc[-2], "TP": tp_for_long, "SL": sl_for_long,"RSI":df['rsi'].iloc[-2]})
+        elif df['close'].iloc[-2] <= df['bb_lower'].iloc[-2] and bb_difference_perc >= 2 and df['mfi'].iloc[-2] <= 30 and df['rsi'].iloc[-2] <= 30 and volume24 >= 100000:
+            signals.append({"close_price":df['close'].iloc[-2],"Symbol": symbol, "Signal": "sell", "Percentage": bb_difference_perc, "MFI": df['mfi'].iloc[-2], "TP": tp_for_long, "SL": sl_for_long,"RSI":df['rsi'].iloc[-2]})
             logging.info(f"{symbol} buy signal generated")
             print(f"{symbol} buy || {signals[-1]} || {df['rsi'].iloc[-2]} || {df['rsi'].iloc[-2]}")
     except Exception as e:
