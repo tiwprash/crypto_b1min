@@ -168,7 +168,7 @@ def bot(interval):
                 sl = round(price * 0.997,decimal)
                 place_tp_order(side="sell",pair=token,activ_pos=active_pos,tp=tp)
                 print(sl,tp,id)
-                tpsl(id=id,sl=sl)
+                # tpsl(id=id,sl=sl)
                 payload = {
                         'chat_id': CHAT_ID,
                         'text': f"Signal for {best_signal} \n Current Portfolio value is {balance_c} \n buy Price is {price} for 15 min "
@@ -188,7 +188,7 @@ def bot(interval):
                 tp = round(price * 0.994,decimal)
                 place_tp_order(side="buy",pair=token,activ_pos=-(active_pos),tp=tp)
                 print(sl,tp)
-                tpsl(id=id,sl=sl)
+                # tpsl(id=id,sl=sl)
                 payload = {
                         'chat_id': CHAT_ID,
                         'text': f"Signal for {best_signal} \n Current Portfolio value is {balance_c} \n buy Price is {price} for 15 min "
