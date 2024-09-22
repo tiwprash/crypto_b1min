@@ -165,7 +165,7 @@ def bot(interval):
 
             if trade_signal == "buy" :
                 tp = round(price * 1.006,decimal) 
-                sl = round(price * 0.997,decimal)
+                sl = round(price * 0.970,decimal)
                 place_tp_order(side="sell",pair=token,activ_pos=active_pos,tp=tp)
                 print(sl,tp,id)
                 # tpsl(id=id,sl=sl)
@@ -184,7 +184,7 @@ def bot(interval):
                     print('Failed to send message:', response.text)
             
             elif trade_signal == "sell" :
-                sl = round(price * 1.003,decimal) 
+                sl = round(price * 1.030,decimal) 
                 tp = round(price * 0.994,decimal)
                 place_tp_order(side="buy",pair=token,activ_pos=-(active_pos),tp=tp)
                 print(sl,tp)
