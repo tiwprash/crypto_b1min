@@ -164,7 +164,7 @@ def bot(interval):
             decimal = count_digits_after_decimal(close_price)
 
             if trade_signal == "buy" :
-                tp = round(price * 1.004,decimal) 
+                tp = round(price * 1.006,decimal) 
                 sl = round(price * 0.996,decimal)
                 place_tp_order(side="sell",pair=token,activ_pos=active_pos,tp=tp)
                 print(sl,tp,id)
@@ -185,7 +185,7 @@ def bot(interval):
             
             elif trade_signal == "sell" :
                 sl = round(price * 1.004,decimal) 
-                tp = round(price * 0.996,decimal)
+                tp = round(price * 0.994,decimal)
                 place_tp_order(side="buy",pair=token,activ_pos=-(active_pos),tp=tp)
                 print(sl,tp)
                 tpsl(id=id,sl=sl)
